@@ -59,7 +59,7 @@ const AuthorCard = ({ content }) => {
       <div className="flex max-w-full flex-col">
         <div className="prose max-w-full pb-8 pt-10 dark:prose-invert xl:text-xl">
           <p>
-            I'm a dedicated{' '}
+            I'm a{' '}
             <RoughNotation
               type="circle"
               show={true}
@@ -69,8 +69,8 @@ const AuthorCard = ({ content }) => {
             >
               Security Engineer{' '}
             </RoughNotation>
-            focused on safeguarding enterprise applications and cloud environments through rigorous
-            risk assessments and innovative security solutions.
+            dedicated to protecting enterprise applications and cloud environments by conducting
+            thorough risk assessments and implementing robust, innovative security solutions.
           </p>
           <div className="py-4">
             <span className="m-2 inline-block rounded-full bg-teal-200 px-2 py-1 text-sm text-teal-900">

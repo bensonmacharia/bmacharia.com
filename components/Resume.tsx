@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState, useRef, useEffect } from 'react'
+import { useCallback, useState } from 'react'
 import { useResizeObserver } from '@wojtekmaj/react-hooks'
 import { pdfjs, Document, Page } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
@@ -24,7 +24,7 @@ export default function Sample({ filename }) {
   const [containerWidth, setContainerWidth] = useState<number>(400)
   const [documentHeight, setDocumentHeight] = useState<number>(400)
 
-  const debounce = (fn, delay) => {
+  function debounce(fn, delay) {
     let timeoutId
     return (...args) => {
       clearTimeout(timeoutId)
@@ -32,29 +32,29 @@ export default function Sample({ filename }) {
     }
   }
 
-  const handleSetContainerWidth = useCallback((width) => {
+  const handleSetContainerWidth = (width) => {
     setContainerWidth(width)
     setDocumentHeight(Math.floor(width * (11 / 8.5)))
-  }, [])
+  }
 
-  const debounceSetContainerWidth = useRef(debounce(handleSetContainerWidth, 100))
+  const debounceSetContainerWidth = debounce(handleSetContainerWidth, 100)
 
-  useEffect(() => {
-    debounceSetContainerWidth.current = debounce(handleSetContainerWidth, 100)
-  }, [handleSetContainerWidth])
+  const onResize = useCallback<ResizeObserverCallback>(
+    (entries) => {
+      const [entry] = entries
 
-  const onResize = useCallback((entries) => {
-    const [entry] = entries
-    if (entry) {
-      debounceSetContainerWidth.current(entry.contentRect.width)
-    }
-  }, [])
+      if (entry) {
+        debounceSetContainerWidth(entry.contentRect.width)
+      }
+    },
+    [debounceSetContainerWidth]
+  )
 
   useResizeObserver(containerRef, resizeObserverOptions, onResize)
 
-  const onDocumentLoadSuccess = useCallback(({ numPages: nextNumPages }: PDFDocumentProxy) => {
+  function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
     setNumPages(nextNumPages)
-  }, [])
+  }
 
   return (
     <div className="PDF__container">
