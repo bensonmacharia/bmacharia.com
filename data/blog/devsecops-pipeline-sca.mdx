@@ -1,0 +1,27 @@
+---
+title: 'Part 3: Software Composition Analysis (SCA) with Trivy'
+date: '2025-11-16'
+tags: ['DevSecOps', 'Trivy', 'SCA']
+draft: false
+summary: Conducting Software Composition Analysis (SCA) in a Jenkis DevSecOps pipeline with Trivy
+images: ['/static/images/devsecops-pipeline-sca.png']
+authors: ['default']
+---
+
+This article is a continuation of the [previous post](https://bmacharia.com/blog/devsecops-pipeline-sast), where we introduced Semgrep in the DevSecOps pipeline to perform Static Application Security Testing (SAST).
+
+In this article, we focus on integrating [Trivy](https://trivy.dev/) into the same DevSecOps pipeline to perform Software Composition Analysis (SCA) and generate a Software Bill of Materials (SBOM).
+
+![devsecops-pipeline-sca](/static/images/devsecops-pipeline-sca.png)
+
+## Software Composition Analysis (SCA)
+
+Software Composition Analysis (SCA) is the process of identifying and analyzing third-party and open-source components used in an application to detect known security vulnerabilities, license risks, and outdated dependencies. Modern applications rely heavily on open-source libraries, which can introduce hidden risks if not properly managed.
+
+## Software Bill of Materials (SBOM)
+
+Software Bill of Materials (SBOM) complements SCA by providing a structured inventory of all components, libraries, and dependencies included in an application, along with their versions and relationships.
+
+## Next steps
+
+This is the end of Part 3. In the upcoming Part 4 we will add more stages into our pipeline including
