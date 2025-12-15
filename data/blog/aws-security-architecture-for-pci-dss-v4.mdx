@@ -1,127 +1,95 @@
 ---
 title: 'Designing a PCI DSS v4 Compliant Environment on AWS'
 date: '2025-06-15'
-tags: ['Cloud', 'PCI DSS']
+tags: ['Cloud', 'PCI DSS', 'AWS']
 draft: false
 summary: A guide to building a secure AWS Cloud environment for PCI DSS v4 compliance
 images: ['/static/images/pci-dss-environment-aws.png']
 authors: ['default']
 ---
 
-Building a **PCI DSS v4 compliant environment on AWS** ensures that your organization can safely handle cardholder data in the cloud. PCI DSS v4 focuses on protecting payment information, implementing strong access controls, and continuously monitoring systems for threats. AWS provides tools and services to help meet these requirements, but building a compliant environment requires careful planning and architecture.
+[PCI DSS (Payment Card Industry Data Security Standard)](https://www.pcisecuritystandards.org/standards/pci-dss) is a global security standard designed to protect credit and debit card data. It applies to any organization that stores, processes, or transmits cardholder information. PCI DSS is important because payment card data is a major target for cybercriminals, and a single breach can lead to financial loss, legal penalties, and loss of customer trust. By following PCI DSS requirements, organizations reduce the risk of data breaches and show customers and partners that their payment data is handled securely.
 
 ![pci-dss-compliance-on-aws](/static/images/pci-dss-environment-aws.png)
 
-The [PCI DSS standard](https://www.pcisecuritystandards.org/standards/pci-dss) defines security requirements for organizations handling payment card data. The main areas include:
+[PCI DSS version 4](https://docs-prv.pcisecuritystandards.org/PCI%20DSS/Standard/PCI-DSS-v4_0_1.pdf) introduces more stringent and modern security requirements to address today’s evolving threats and cloud-based environments. It places stronger emphasis on **continuous security, risk-based controls, and accountability** rather than simple checkbox compliance. The main requirements for PCI DSS v4 include:
 
-1. **Build and Maintain a Secure Network**
-2. **Protect Cardholder Data**
-3. **Maintain a Vulnerability Management Program**
-4. **Implement Strong Access Control Measures**
-5. **Monitor and Test Networks Regularly**
-6. **Maintain an Information Security Policy**
+| Requirement                                                                              | New or Updated in v4?                                                     |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **1. Install and maintain network security controls**                                    | Updated (stronger focus on cloud and dynamic environments)                |
+| **2. Apply secure configurations to all system components**                              | Updated (explicit system hardening and configuration management)          |
+| **3. Protect stored account data**                                                       | Updated (clearer encryption, key management, and data retention rules)    |
+| **4. Protect cardholder data with strong cryptography during transmission**              | No (clarified and reinforced)                                             |
+| **5. Protect all systems and networks from malicious software**                          | Updated (explicit coverage for phishing and evolving malware threats)     |
+| **6. Develop and maintain secure systems and software**                                  | Updated (secure software development lifecycle and change management)     |
+| **7. Restrict access to system components and cardholder data by business need to know** | No                                                                        |
+| **8. Identify users and authenticate access to system components**                       | **Yes** (expanded Multi-Factor Authentication requirements)               |
+| **9. Restrict physical access to cardholder data**                                       | No                                                                        |
+| **10. Log and monitor all access to system components and cardholder data**              | **Yes** (stronger logging, monitoring, and alerting expectations)         |
+| **11. Test security of systems and networks regularly**                                  | Updated (continuous testing and targeted risk analysis)                   |
+| **12. Support information security with organizational policies and programs**           | **Yes** (defined roles, ongoing risk assessments, and security awareness) |
 
-Version 4 emphasizes **continuous compliance, risk-based controls, and flexibility**. Organizations must not only follow set rules but also regularly assess risks and update controls.
+AWS Cloud helps organizations achieve PCI DSS v4 compliance faster and more efficiently compared to traditional on-premises data centers. AWS provides a secure-by-design infrastructure with built-in controls for network security, encryption, identity management, logging, and monitoring, which directly support many PCI DSS requirements.
 
----
+### PCI DSS v4 Compliance on AWS
 
-## AWS Shared Responsibility Model
+By using managed AWS services, organizations reduce operational overhead, improve consistency, and more easily meet the continuous security expectations introduced in PCI DSS v4. The sections below provide a detailed guide on how different AWS services can assist organizations in achieving PCI DSS v4 compliance.
 
-AWS operates under a [Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/), meaning:
+#### Requirement 1: Install and maintain network security controls
 
-- **AWS is responsible for:** The security of the cloud, including physical infrastructure, managed services, and hardware.
-- **You, the customer, are responsible for:** Configurations, access management, data protection, monitoring, and maintaining compliance.
+AWS enables strong network security using services such as [Amazon VPC](https://docs.aws.amazon.com/vpc/), [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), and [network ACLs](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) to control inbound and outbound traffic. Customers can design isolated cardholder data environments (CDEs) using VPC segmentation, private subnets, and [AWS Network Firewall](https://aws.amazon.com/network-firewall/). These controls are software-defined, easier to audit, and quicker to change than traditional physical firewalls.
 
-Using AWS services that are **PCI DSS certified**—like [S3](https://aws.amazon.com/s3/), [RDS](https://aws.amazon.com/rds/), [CloudTrail](https://aws.amazon.com/cloudtrail/), [GuardDuty](https://aws.amazon.com/guardduty/), and [KMS](https://aws.amazon.com/kms/)—can reduce the effort needed to meet PCI DSS requirements.
+#### Requirement 2: Apply secure configurations to all system components
 
----
+AWS helps enforce secure system configurations using services like [AWS Systems Manager](https://aws.amazon.com/systems-manager/), [AWS Config](https://aws.amazon.com/config/), and [Amazon Machine Images (AMIs)](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html). Organizations can define baseline configurations, continuously monitor drift, and automatically remediate non-compliant resources. This supports PCI DSS v4’s emphasis on configuration management and continuous compliance.
 
-## Designing a Secure AWS Network
+#### Requirement 3: Protect stored account data
 
-A well-designed network is key to protecting payment systems. Best practices include:
+AWS provides strong encryption capabilities through [AWS Key Management Service (KMS)](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) and [AWS CloudHSM](https://aws.amazon.com/cloudhsm/). Cardholder data can be encrypted at rest across services such as [Amazon RDS](https://aws.amazon.com/rds/), [DynamoDB](https://aws.amazon.com/dynamodb/), and [S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html). AWS also supports key rotation, access controls, and separation of duties, which are critical for PCI DSS v4 key management requirements.
 
-- **Segmentation:** Use separate VPCs to isolate sensitive workloads from public-facing services.
-- **Subnets:** Place public-facing applications in public subnets and sensitive systems like databases in private subnets.
-- **Security Groups & NACLs:** Control traffic at instance and subnet levels.
-- **Bastion Hosts:** Provide secure access to private subnets for administrators.
+#### Requirement 4: Protect cardholder data during transmission
 
-Additional protections can be achieved using [AWS WAF](https://aws.amazon.com/waf/) and [AWS Shield](https://aws.amazon.com/shield/) to defend against web attacks and DDoS threats.
+AWS supports encryption in transit using TLS across its services. Load balancers such as [Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) and [Network Load Balancer](https://aws.amazon.com/elasticloadbalancing/network-load-balancer/) integrate with [AWS Certificate Manager](https://aws.amazon.com/certificate-manager/) to manage certificates securely. This allows organizations to enforce strong cryptography without managing certificates manually.
 
----
+#### Requirement 5: Protect all systems and networks from malicious software
 
-## Identity and Access Management (IAM)
+AWS helps protect against malware and phishing threats using [Amazon GuardDuty](https://aws.amazon.com/guardduty/), [AWS Shield](https://aws.amazon.com/shield/), and [Amazon Inspector](https://aws.amazon.com/inspector/). These services provide threat detection, vulnerability scanning, and continuous monitoring, aligning with PCI DSS v4’s expanded focus on evolving attack techniques.
 
-Access control is critical for PCI DSS compliance:
+#### Requirement 6: Develop and maintain secure systems and software
 
-- Follow the **least privilege principle** to ensure users have only the permissions they need.
-- Enable **Multi-Factor Authentication (MFA)** for all high-privilege accounts.
-- Use [AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html) and Service Control Policies (SCPs) for multi-account governance.
-- Enable **CloudTrail** logging to track all IAM activity for auditing purposes.
+AWS supports secure development through services such as [AWS CodePipeline](https://aws.amazon.com/codepipeline/), [CodeBuild](https://aws.amazon.com/codebuild/), and [CodeDeploy](https://aws.amazon.com/codedeploy/), combined with security scanning tools like Amazon Inspector. Infrastructure as Code using [AWS CloudFormation](https://aws.amazon.com/cloudformation/) allows secure, repeatable deployments and controlled change management.
 
-For detailed IAM practices, refer to [AWS IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html).
+#### Requirement 7: Restrict access to system components and cardholder data
 
----
+[AWS Identity and Access Management (IAM)](https://aws.amazon.com/iam/) allows fine-grained, role-based access control using least privilege principles. Access to the cardholder data environment can be tightly controlled and audited, reducing the risk of unauthorized access.
 
-## Protecting Cardholder Data
+#### Requirement 8: Identify users and authenticate access to system components
 
-Securing sensitive data is at the core of PCI DSS:
+PCI DSS v4 significantly expands [Multi-Factor Authentication (MFA)](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html) requirements, which AWS supports natively through IAM and AWS Single Sign-On. MFA can be enforced for all privileged and remote access to systems that handle cardholder data.
 
-- **Data at Rest:** Encrypt S3 buckets, RDS databases, and EBS volumes using [AWS KMS](https://aws.amazon.com/kms/).
-- **Data in Transit:** Use TLS 1.2 or higher for secure communication between systems.
-- **Key Management:** Rotate encryption keys regularly and restrict access to sensitive data.
-- **Tokenization:** Reduce exposure of cardholder data by using tokenized representations where possible.
+#### Requirement 9: Restrict physical access to cardholder data
 
-For more guidance, see [AWS Security Best Practices](https://aws.amazon.com/architecture/security-best-practices/).
+Under the [AWS shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/), AWS manages physical security of data centers, including access controls, surveillance, and environmental protections. This removes a major compliance burden compared to on-premises data centers.
 
----
+#### Requirement 10: Log and monitor all access to system components and cardholder data
 
-## Monitoring, Logging, and Threat Detection
+AWS provides centralized logging and monitoring using [AWS CloudTrail](https://aws.amazon.com/cloudtrail/), [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/), and [AWS OpenSearch](https://aws.amazon.com/opensearch-service/). These services enable detailed audit trails, real-time alerts, and log retention, supporting PCI DSS v4’s stronger monitoring and detection requirements.
 
-Continuous monitoring is essential:
+#### Requirement 11: Test security of systems and networks regularly
 
-- Enable **CloudTrail** to log all API activity.
-- Use **Amazon GuardDuty** and **AWS Security Hub** to detect anomalies and manage compliance findings.
-- Aggregate logs in **Amazon CloudWatch** for centralized monitoring and real-time alerts.
+AWS supports continuous testing through Amazon Inspector, automated vulnerability scanning, and integration with third-party penetration testing tools. PCI DSS v4’s requirement for targeted risk analysis is easier to achieve with automated and scalable cloud-based testing.
 
-Learn more at [AWS Monitoring and Logging](https://docs.aws.amazon.com/monitoring/).
+#### Requirement 12: Support information security with organizational policies and programs
 
----
+AWS provides compliance reports, audit artifacts, and security best practices through [AWS Artifact](https://aws.amazon.com/artifact/). Combined with services like [AWS Organizations](https://aws.amazon.com/organizations/) and [Security Hub](https://aws.amazon.com/security-hub/), organizations can define responsibilities, perform risk assessments, and maintain ongoing security governance as required by PCI DSS v4.
 
-## Vulnerability Management
+### Conclusion
 
-Maintaining a strong security posture requires:
-
-- Regularly **patching EC2 instances and managed services**.
-- Using [Amazon Inspector](https://aws.amazon.com/inspector/) to scan for vulnerabilities.
-- Performing **penetration testing** according to [AWS Penetration Testing Guidelines](https://aws.amazon.com/security/penetration-testing/).
-
----
-
-## Policies, Procedures, and Continuous Compliance
-
-PCI DSS v4 emphasizes ongoing governance:
-
-- Maintain security policies aligned with PCI DSS requirements.
-- Automate compliance checks using **AWS Config** and **Security Hub**.
-- Conduct **internal audits** and regular risk assessments.
-- Document all procedures for auditing and accountability.
-
----
-
-## Conclusion
-
-Designing a **PCI DSS v4 compliant AWS environment** requires careful network architecture, strong identity and access controls, robust data protection, continuous monitoring, and ongoing vulnerability management. Leveraging AWS services with best practices ensures your cloud environment remains secure and compliant.
-
-For formal validation, consult a **[Qualified Security Assessor (QSA)](https://www.pcisecuritystandards.org/assessors_and_solutions/qsa)**.
-
----
+In conclusion, designing a PCI DSS v4 compliant environment on AWS allows organizations to meet strict security requirements while gaining the flexibility and scalability of the cloud. AWS provides a wide range of managed services that support encryption, access control, monitoring, and continuous security, which are core to PCI DSS v4. By leveraging the AWS shared responsibility model and security best practices, organizations can reduce complexity, lower operational costs, and maintain compliance more effectively than in traditional on-premises environments. This approach not only helps achieve compliance faster but also supports ongoing security improvements as threats and business needs evolve.
 
 **References:**
 
 - [PCI DSS v4.0 Standard](https://www.pcisecuritystandards.org/standards/pci-dss)
-- [AWS Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/)
 - [AWS Security Best Practices](https://aws.amazon.com/architecture/security-best-practices/)
-- [AWS IAM Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 - [AWS Penetration Testing Guidelines](https://aws.amazon.com/security/penetration-testing/)
 - [Qualified Security Assessors (QSA)](https://www.pcisecuritystandards.org/assessors_and_solutions/qsa)
-- [AWS Monitoring and Logging](https://docs.aws.amazon.com/monitoring/)
