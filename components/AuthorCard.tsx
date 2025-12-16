@@ -79,6 +79,9 @@ const AuthorCard = ({ content }) => {
             <span className="m-2 inline-block rounded-full  bg-indigo-200 px-2 py-1 text-sm text-indigo-900">
               Cloud Security
             </span>
+            <span className="m-2 inline-block rounded-full  bg-amber-400 px-2 py-1 text-sm text-sky-950">
+              AI Security
+            </span>
             <span className="m-2 inline-block rounded-full  bg-blue-200 px-2 py-1 text-sm text-blue-900">
               DevSecOps
             </span>
