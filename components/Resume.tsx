@@ -7,7 +7,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
 import 'css/pdf.css'
 
-// import type { PDFDocumentProxy } from 'pdfjs-dist'
+import type { PDFDocumentProxy } from 'pdfjs-dist'
 
 pdfjs.GlobalWorkerOptions.workerSrc = '/static/js/pdf.worker.min.js'
 
@@ -52,8 +52,8 @@ export default function Sample({ filename }) {
 
   useResizeObserver(containerRef, resizeObserverOptions, onResize)
 
-  const onDocumentLoadSuccess = (document: any) => {
-    setNumPages(document.numPages)
+  function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
+    setNumPages(nextNumPages)
   }
 
   return (
