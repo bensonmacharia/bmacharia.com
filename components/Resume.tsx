@@ -63,7 +63,7 @@ export default function Sample({ filename }) {
           {Array.from(new Array(numPages), (el, index) => (
             <Page
               canvasBackground={'#ffffff'}
-              className={`min-w-fit border border-primary-500 bg-primary-500`}
+              className={`border-primary-500 bg-primary-500 min-w-fit border`}
               key={`page_${index + 1}`}
               pageNumber={index + 1}
               height={documentHeight}

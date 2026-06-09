@@ -26,12 +26,12 @@ const AuthorCard = ({ content }) => {
               alt="avatar"
               width={224}
               height={224}
-              className="h-48 w-48 min-w-48 rounded-full dark:border-2 dark:border-primary-400 md:h-52 md:w-52"
+              className="dark:border-primary-400 h-48 w-48 min-w-48 rounded-full md:h-52 md:w-52 dark:border-2"
             />
           </div>
         )}
         <div>
-          <h3 className="pb-2 pt-4  text-2xl font-bold leading-8 tracking-tight sm:text-3xl md:text-4xl">
+          <h3 className="pt-4 pb-2 text-2xl leading-8 font-bold tracking-tight sm:text-3xl md:text-4xl">
             <RoughNotation
               type="underline"
               show={true}
@@ -43,7 +43,7 @@ const AuthorCard = ({ content }) => {
             </RoughNotation>
           </h3>
           <div className="md:text-md text-base text-gray-500 dark:text-gray-400">{occupation}</div>
-          <div className="md:text-md text-base text-primary-500 dark:text-primary-400">
+          <div className="md:text-md text-primary-500 dark:text-primary-400 text-base">
             {qualifications}
           </div>
           <div className="md:text-md text-base text-gray-500 dark:text-gray-400">{location}</div>
@@ -57,7 +57,7 @@ const AuthorCard = ({ content }) => {
         </div>
       </div>
       <div className="flex max-w-full flex-col">
-        <div className="prose max-w-full pb-8 pt-10 dark:prose-invert xl:text-xl">
+        <div className="prose dark:prose-invert max-w-full pt-10 pb-8 xl:text-xl">
           <p>
             I'm a{' '}
             <RoughNotation
@@ -76,34 +76,34 @@ const AuthorCard = ({ content }) => {
             <span className="m-2 inline-block rounded-full bg-teal-200 px-2 py-1 text-sm text-teal-900">
               Application Security
             </span>
-            <span className="m-2 inline-block rounded-full  bg-indigo-200 px-2 py-1 text-sm text-indigo-900">
+            <span className="m-2 inline-block rounded-full bg-indigo-200 px-2 py-1 text-sm text-indigo-900">
               Cloud Security
             </span>
-            <span className="m-2 inline-block rounded-full  bg-amber-400 px-2 py-1 text-sm text-sky-950">
+            <span className="m-2 inline-block rounded-full bg-amber-400 px-2 py-1 text-sm text-sky-950">
               AI Security
             </span>
-            <span className="m-2 inline-block rounded-full  bg-blue-200 px-2 py-1 text-sm text-blue-900">
+            <span className="m-2 inline-block rounded-full bg-blue-200 px-2 py-1 text-sm text-blue-900">
               DevSecOps
             </span>
-            <span className="m-2 inline-block rounded-full  bg-purple-200 px-2 py-1 text-sm text-purple-900">
+            <span className="m-2 inline-block rounded-full bg-purple-200 px-2 py-1 text-sm text-purple-900">
               ISO 27001
             </span>
-            <span className="m-2 inline-block rounded-full  bg-red-200 px-2 py-1 text-sm text-red-900">
+            <span className="m-2 inline-block rounded-full bg-red-200 px-2 py-1 text-sm text-red-900">
               Red Team
             </span>
-            <span className="m-2 inline-block rounded-full  bg-green-200 px-2 py-1 text-sm text-green-900">
+            <span className="m-2 inline-block rounded-full bg-green-200 px-2 py-1 text-sm text-green-900">
               Threat Modeling
             </span>
-            <span className="m-2 inline-block rounded-full  bg-orange-200 px-2 py-1 text-sm text-orange-900">
+            <span className="m-2 inline-block rounded-full bg-orange-200 px-2 py-1 text-sm text-orange-900">
               Security Architecture
             </span>
-            <span className="m-2 inline-block rounded-full  bg-fuchsia-200 px-2 py-1 text-sm text-fuchsia-900">
+            <span className="m-2 inline-block rounded-full bg-fuchsia-200 px-2 py-1 text-sm text-fuchsia-900">
               Vulnerability Assessment
             </span>
-            <span className="m-2 inline-block rounded-full  bg-lime-200 px-2 py-1 text-sm text-lime-900">
+            <span className="m-2 inline-block rounded-full bg-lime-200 px-2 py-1 text-sm text-lime-900">
               Penetration Testing
             </span>
-            <span className="m-2 inline-block rounded-full  bg-amber-200 px-2 py-1 text-sm text-amber-900">
+            <span className="m-2 inline-block rounded-full bg-amber-200 px-2 py-1 text-sm text-amber-900">
               Compliance Management
             </span>
           </div>

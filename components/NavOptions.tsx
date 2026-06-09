@@ -45,7 +45,7 @@ const RenderNavLink = ({ navItem }: { navItem: NavItem }) => {
       <Link
         key={navItem.title}
         href={navItem.href}
-        className="hidden font-medium text-gray-900 hover:text-primary-500 dark:text-gray-100  dark:hover:text-primary-400 sm:block"
+        className="hover:text-primary-500 dark:hover:text-primary-400 hidden font-medium text-gray-900 sm:block dark:text-gray-100"
       >
         {navItem.title}
       </Link>
@@ -58,7 +58,7 @@ const RenderNavLink = ({ navItem }: { navItem: NavItem }) => {
           {navItem.title && (
             <Menu.Button
               className={
-                'hidden font-medium text-gray-900 hover:text-primary-500 dark:text-gray-100  dark:hover:text-primary-400 sm:block'
+                'hover:text-primary-500 dark:hover:text-primary-400 hidden font-medium text-gray-900 sm:block dark:text-gray-100'
               }
             >
               {navItem.title}
@@ -74,7 +74,7 @@ const RenderNavLink = ({ navItem }: { navItem: NavItem }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
+          <Menu.Items className="ring-opacity-5 absolute right-0 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-none dark:bg-gray-800">
             <div className="p-1">
               {navItem.children &&
                 navItem.children.map((link: NavItemChild) => (
